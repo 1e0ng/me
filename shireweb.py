@@ -75,7 +75,7 @@ class ShireWeb(object):
         return client[name]
 
     def run(self):
-        logging.info('Runing at port %s in %s mode',
+        logging.info('Runing at http://127.0.0.1:%s in %s mode',
                      options.port, 'debug' if options.debug else 'production')
         server = HTTPServer(self.app, xheaders=True)
         server.listen(options.port)

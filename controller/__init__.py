@@ -1,4 +1,4 @@
 from handlers import BaseHandler
-class HelloHandler(BaseHandler):
+class HomeHandler(BaseHandler):
     def get(self):
-        self.render('hello.html', word='Hello world!')
+        self.render('home.html')

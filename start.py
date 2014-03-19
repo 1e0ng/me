@@ -6,7 +6,8 @@ from shireweb import ShireWeb
 
 if __name__ == "__main__":
     routes = [
-        (r'/', 'controller.HelloHandler'),
+        (r'/', 'controller.HomeHandler'),
+
 
         (r'/users/?', 'handlers.UserListHandler'),
         (r'/user/?(\w*)', 'handlers.UserHandler'),

@@ -94,6 +94,17 @@ class BaseHandler(RequestHandler):
     def render(self, template, **kwargs):
         kwargs['navigation_bar'] = [i for i in [
             ('/users', 'users', 'Users'),
+            ('/newsfeed', 'newsfeed',   'News Feed'),
+            ('/', 'home', 'Dashboard'),
+            ('/events', 'events',   'Events'),
+            ('/groups', 'groups',   'Groups'),
+            ('/mycard',     'mycard', 'My Card'),
+            #('/cardcase', '卡片夹',   'briefcase', ''),
+            #('/dig', '花名榜',   'trophy', ''),
+            ('/cards', 'cards', 'All Cards'),
+            ('/timeline', 'timeline',   'Timeline'),
+            #('/magic', '星座',   'magic', ''),
+
         ] if self.has_permission(i[0])]
 
         return super(BaseHandler, self).render(template, **kwargs)
