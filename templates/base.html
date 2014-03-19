@@ -16,70 +16,108 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container">
-            <div class="navbar navbar-inverse" role="navigation">
-                <div class="navbar-header">
-                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">Shire</a>
-                </div>
-                <div class="nav-collapse collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+    {%if request.user %}
+    <div class="main-sidebar">
+        <div class="sidebar-header clearfix">
+            <a class="btn-navcollapse" data-toggle="collapse" data-target=".nav-collapse"><i class="icon icon-th-large"></i></a>
+            <a class="brand" href="/about">About</a>
+        </div>
+        <div class="nav-collapse">
+            <form class="sidebar-form" method="get" action="/search">
+                <input type="text" name="q" placeholder="搜索姓名，id，邮箱">
+                <i class="icon icon-white icon-search"></i>
+            </form>
 
-                      {% block nav_items %}
-                        {% for href, id, caption in navigation_bar %}
-                        <li{% if active_page and id == active_page or request.path == href %} class="active"{% endif%}>
-                        <a href="{{ href|e }}">{{ caption|e }}</a>
-                        </li>
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-home"></i></a></li>
+                    <li><a href="#tab2" data-toggle="tab" onclick="return read_notify('')">
+                        {% if n_notify > 0 %}
+                        <span id="notify-num" class="important">{{n_notify}}</span>
+                        {% else %}
+                        <span id="notify-num">0</span>
+                        {% endif %}
+                    </a></li>
+                    <li><a href="#tab3" data-toggle="tab"><img class="avatar-small" src="{{ req.user.picture(default=True) }}"/></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <ul class="unstyled sidebar-nav">
+                            {% for href, id, caption in navigation_bar %}
+                            {% if active_page == id %}
+                            <li class="active">
+                            {% else %}
+                            <li>
+                            {% endif %}
+                            <a href="{{ href }}"><i class="icon-"></i> <span>{{caption}}</span><i class="flag"></i></a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        {% for n in req.card.notifications[:max(5,req.n_notify)] %}
+                        {{ utils.card_notify(n) }}
                         {% endfor %}
-                      {% endblock %}
-                    </ul>
-                    <div class="nav navbar-nav navbar-right">
-                      {% block navbar_form %}
-                      {% endblock %}
-                      <ul class="nav navbar-nav">
-                          {% if current_user %}
-                          <li><a href="{{prefix}}/account"><i class="glyphicon glyphicon-user"></i> &nbsp; {{current_user['email']}}</a></li>
-                          <li>
-                          <a href="{{handler.get_logout_url()}}" id="signout">Sign out</a>
-                          </li>
-                          {% else %}
-                          <li>
-                          <a href="{{handler.get_login_url()}}" id="signin">Sign in</a>
-                          </li>
-                          {% endif %}
-                      </ul>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <ul class="unstyled sidebar-nav">
+                            <li><a href="/mine"><i class="icon-user"></i> {{ req.user.name }}</a></li>
+                            <li><a href="/make"><i class="icon-edit"></i> 修改资料</a></li>
+                            <li><a href="{{ req.logout_url }}"><i class="icon-signout"></i> 登出</a>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-            <div class="content">
-                {% block body %}
-                {% endblock %}
-            </div>
-
-            <footer class="footer">
-                <p>
-                Powered by <a href="https://github.com/liangsun/shire">shire</a>.
-                <p>
-            </footer>
-
-            {{ xsrf_form_html() }}
-
-            {% if handler.application.settings.debug %}
-            <div class="debug" style="position:fixed; right: 10px; bottom: 10px; border: 1px solid grey">
-              <span style="color: {{'red' if request.request_time() > 0.2 else 'green'}}">Page processed in {{(request.request_time() * 1000)|round(2)}}ms.</span>
-            </div>
-            {% endif %}
         </div>
+    </div>
+    {% endif %}
 
         <script src="{{static_url('js/jquery-1.10.2.min.js')}}"></script>
         <script src="{{static_url('js/jquery.cookie.js')}}"></script>
         <script src="{{static_url('js/bootstrap.min.js')}}"></script>
         <script src="{{static_url('js/shire.js')}}"></script>
+
+        <script src="{{static_url('js/jquery.masonry.min.js')}}"></script>
+        <script src="{{static_url('js/mustache.js')}}"></script>
+        <script src="{{static_url('js/tagsug.js')}}"></script>
+        <script src="{{static_url('js/webapp.js')}}"></script>
+
+    <script>
+    if($('.me-comm')){
+        var meCommForm = $('.me-comm');
+        var highlighter = meCommForm.find('p.mention-highlighter');
+        var meCommTextarea = $('.me-comm-textarea');
+        //console.log(meCommTextarea);
+        meCommTextarea.tagsug({
+            url: 'https://api.douban.com/shuo/in/complete?alt=xd&count={max}&callback=?&word=',
+            highlight: true,
+            highlighter: highlighter
+        });
+    }
+	var $container = $('.columns');
+	
+	$container.imagesLoaded( function(){
+	  $container.masonry({
+	    itemSelector : '.columns-item'
+	  });
+	});
+
+$("body").delegate(".blog-comment-input", "focus", function()
+{
+    /*to make this flexible, I'm storing the current width in an attribute*/
+    $(this).parent().addClass("blog-comment-action-expand");
+});
+$("body").delegate(".blog-comment-cancel", "click", function()
+{
+    /*to make this flexible, I'm storing the current width in an attribute*/
+    $(this).parent().removeClass("blog-comment-action-expand");
+    $(this).prevAll(".hide").hide();
+    $(this).prevAll(".blog-comment-input").val("");
+});
+
+	$('.fbtimeline').masonry({itemSelector : '.item',});
+    $(".card-tooltip").tooltip();
+	</script>
 
         {% block js %}
         {% endblock %}
