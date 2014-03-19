@@ -1,17 +1,17 @@
 # models.blog
 # -*- coding: UTF-8 -*-
 
-from quixote.html import html_quote
+from cgi import escape as html_quote
 from operator import itemgetter, attrgetter
 from wand.image import Image
 from config import DEVELOP_MODE
 from datetime import datetime, timedelta
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, User, send_fireworks, publish_channel_msg
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User 
 from webapp.models.consts import *
 from webapp.models.notify import Notify
 from webapp.models.utils import scale
 from config import SITE
-import simplejson as json
+import json
 import re
 
 class BlogComment(object):
@@ -399,7 +399,7 @@ class Blog(object):
                     topic_id = Topic.bind(name, user_id, id)
         if btype in [cls.TYPE_BLOG, cls.TYPE_NOTIFY]:
             blog = Blog.get(id)
-            send_fireworks(blog.fireworks_dict())
+            #send_fireworks(blog.fireworks_dict())
         return id
 
     def photo_data(self, cate):
@@ -407,7 +407,6 @@ class Blog(object):
             return doubanfs.get("/me/bp%s-%s-%s" % (self.id, self.photo_id, cate))
 
     @property
-    @cache("me:bp-size:{self.id}", expire=3600*24)
     def photo_size(self):
         d = self.photo_data(Cate.LARGE)
         if d:

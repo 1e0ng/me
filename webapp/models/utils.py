@@ -1,8 +1,8 @@
 # models.utils
 # -*- coding: UTF-8 -*-
 import re
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, User
-from quixote.html import html_quote
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User
+from cgi import escape as html_quote
 from config import SITE
 from wand.image import Image
 from webapp.models.card import Card
@@ -134,7 +134,6 @@ def transfer_user(from_id, to_id):
         #+----------------+
         store.commit()
 
-@cache("me:users:dict", expire=3600)
 def get_users_dict():
     r = {}
     rs = store.execute("select uid, user_id from me_card where flag=%s", Card.FLAG_NORMAL)

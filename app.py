@@ -2,18 +2,18 @@
 # coding:utf8
 
 import os
-import quixote
+from quixote.publish import Publisher
 
-from webapp import views as controllers
-from quixote.qwip import QWIP
+from webapp.views import RootDirectory
+#from quixote.qwip import QWIP
 from libs.gzipper import make_gzip_middleware
 #from libs import show_performance_metric
 from config import UPLOAD_DIR
 import time
 
-class Publisher(quixote.Publisher):
+class Pub(Publisher):
     def __init__(self, *args, **kwargs):
-        quixote.Publisher.__init__(self, *args, **kwargs)
+        Publisher.__init__(self, *args, **kwargs)
         #self.configure(DISPLAY_EXCEPTIONS='plain', UPLOAD_DIR=UPLOAD_DIR)
 
     def start_request(self, request):
@@ -30,15 +30,16 @@ class Publisher(quixote.Publisher):
         request.url = '/'
         request.start_time = time.time()
 
-    def try_publish(self, request, path):
-        output = quixote.Publisher.try_publish(self, request, path)
-        #output = show_performance_metric(request, output)
-        return output
-
     def _generate_cgitb_error(self, request, original_response, exc_type, exc_value, tb):
         return "500"
 
 def create_publisher():
-    return Publisher(controllers)
+    return Publisher(RootDirectory(),
+            display_exceptions='plain')
 
-app = make_gzip_middleware(QWIP(create_publisher()))
+#app = make_gzip_middleware(QWIP(create_publisher()))
+
+if __name__ == '__main__':
+    from quixote.server.simple_server import run
+    print 'creating server listening on http://localhost:8000'
+    run(create_publisher, host='localhost', port=8000)

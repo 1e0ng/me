@@ -5,14 +5,14 @@ from operator import itemgetter, attrgetter
 from wand.image import Image
 from config import DEVELOP_MODE
 from datetime import datetime, timedelta
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, User
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User
 from webapp.models.consts import *
 from webapp.models.notify import Notify
 from webapp.models.profile import Profile
 from webapp.models.badage import Badage
 from webapp.models.question import Question, Answer
 from config import SITE
-import simplejson as json
+import json
 import math
 
 CHART_BLACK_LIST_UIDS = [
@@ -241,7 +241,6 @@ class Card(object):
             return cls.get(r[0])
 
     @classmethod
-    @cache("me-card:{id}", expire=3600)
     def get(cls, id):
         r = store.execute("select `user_id`, `uid`, `email`, `skype`, `name`, `alias`, `phone`, `photo`,"
                 " `flag`, `join_time`, `rtime`, `ctime`"
@@ -414,7 +413,6 @@ class Card(object):
         return n, [cls.get(i) for i in cids[start:start+limit]]
 
     @classmethod
-    @cache("me-cards-by-time:{year}", expire=3600)
     def gets_ids_by_time(cls, year=''):
         cids = []
         if not year:
@@ -572,25 +570,21 @@ class Card(object):
             return doubanfs.get("/me/card/%s/photo/%s/%s" % (self.id, id, cate))
 
     @property
-    @cache("me-card:{self.id}:score", expire=3600)
     def score(self):
         r = store.execute("select score from me_card where user_id=%s", self.id)
         return r and r[0][0]
 
     @property
-    @cache("me-card:{self.id}:activities", expire=3600)
     def activities(self):
         r = store.execute("select activities from me_card where user_id=%s", self.id)
         return r and r[0][0]
 
     @classmethod
-    @cache("me-card:max-score", expire=3600)
     def max_score(cls):
         r = store.execute("select max(score) from me_card")
         return r and r[0][0]
 
     @classmethod
-    @cache("me-card:max-score", expire=3600)
     def max_activities(cls):
         r = store.execute("select max(activities) from me_card")
         return r and r[0][0]

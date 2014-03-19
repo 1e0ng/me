@@ -5,10 +5,10 @@ from operator import itemgetter, attrgetter
 from wand.image import Image
 from config import DEVELOP_MODE
 from datetime import datetime, timedelta
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, irc_send_message, User
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User
 from webapp.models.consts import *
 from config import SITE
-import simplejson as json
+import json
 
 class Notify(object):
 
@@ -266,11 +266,6 @@ class Notify(object):
                 if badage:
                     message = "#me: 你得到了一枚%s徽章哦~ 点击查看：%s/badage/%s" % (badage.name, SITE, badage.name)
             iu = self.card.email.replace('@douban.com','')
-            print 'send_irc', iu, message
-            try:
-                irc_send_message(iu, message)
-            except:
-                print 'sent irc error!!!'
 
     @property
     def author(self):

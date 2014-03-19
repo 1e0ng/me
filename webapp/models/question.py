@@ -5,7 +5,7 @@ from operator import itemgetter, attrgetter
 from webapp.models.consts import ADMINS
 from webapp.models.notify import Notify
 from libs import store
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, User
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User
 from datetime import datetime, timedelta
 
 class Answer(object):

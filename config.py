@@ -10,6 +10,8 @@ MAKO_FS_CHECK = True
 
 UPLOAD_DIR = path.join('/tmp', 'quixote_upload')
 
+DEVELOP_MODE = False
+
 try:
     from local_config import *
 except ImportError:

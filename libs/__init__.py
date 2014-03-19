@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import time
+from collections import namedtuple
 import traceback
 import json
 import os
@@ -19,3 +20,20 @@ def show_performance_metric(request, output):
     return output
 
 store = SqlStore(host='localhost', user='bear', passwd='', db='me')
+
+class DoubanDB(dict):
+    def set(self, k, v):
+        self[k] = v
+    def delete(self, k):
+        del self[k]
+
+class EmployeeClass(object):
+    def dget(this, card_id):
+        return namedtuple('fullname', 'douban_mail', 'entry_date')('rush', 'rush@lost.com', 2341343)
+
+doubandb = DoubanDB()
+doubanfs = DoubanDB()
+doubanmc = DoubanDB()
+
+Employee = EmployeeClass()
+User = EmployeeClass()

@@ -1,18 +1,17 @@
 # models.group
 # -*- coding: UTF-8 -*-
 
-from quixote.html import html_quote
 from operator import itemgetter, attrgetter
 from wand.image import Image
 from config import DEVELOP_MODE, SITE
 from datetime import datetime, timedelta
-from libs import doubandb, doubanfs, cache, doubanmc, store, User
+from libs import doubandb, doubanfs, doubanmc, store, User
 from webapp.models.consts import *
 from webapp.models.notify import Notify
 from webapp.models.utils import scale, url_encode
 from webapp.models.card import Card
 from webapp.models.tag import Tag
-import simplejson as json
+import json
 import re
 
 GROUP_UID_RE = re.compile('^[a-zA-z0-9_]+$')

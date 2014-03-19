@@ -4,12 +4,12 @@
 import re
 from wand.image import Image
 from datetime import datetime, timedelta
-from libs import doubandb, doubanfs, Employee, cache, doubanmc, store, User
+from libs import doubandb, doubanfs, Employee, doubanmc, store, User
 from webapp.models.consts import *
 from webapp.models.utils import scale, url_encode
 from webapp.models.card import Card, Notify
 from config import SITE
-import simplejson as json
+import json
 import time
 
 class Event(object):
