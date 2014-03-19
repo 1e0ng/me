@@ -16,7 +16,7 @@ redis
 
 juggernaut
 
-wand (http://code.dapps.douban.com/bear/wand.git)
+wand
 
 #Run
 create database me
