@@ -16,21 +16,21 @@
         {% endblock %}
     </head>
     <body>
-    {%if request.user %}
+    {%if current_user %}
     <div class="main-sidebar">
         <div class="sidebar-header clearfix">
-            <a class="btn-navcollapse" data-toggle="collapse" data-target=".nav-collapse"><i class="icon icon-th-large"></i></a>
+            <a class="btn-navcollapse" data-toggle="collapse" data-target=".nav-collapse"><i class="glyphicon glyphicon-th-large"></i></a>
             <a class="brand" href="/about">About</a>
         </div>
         <div class="nav-collapse">
             <form class="sidebar-form" method="get" action="/search">
                 <input type="text" name="q" placeholder="搜索姓名，id，邮箱">
-                <i class="icon icon-white icon-search"></i>
+                <i class="glyphicon glyphicon-white glyphicon-search"></i>
             </form>
 
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-home"></i></a></li>
+                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="glyphicon glyphicon-home"></i></a></li>
                     <li><a href="#tab2" data-toggle="tab" onclick="return read_notify('')">
                         {% if n_notify > 0 %}
                         <span id="notify-num" class="important">{{n_notify}}</span>
@@ -38,7 +38,7 @@
                         <span id="notify-num">0</span>
                         {% endif %}
                     </a></li>
-                    <li><a href="#tab3" data-toggle="tab"><img class="avatar-small" src="{{ req.user.picture(default=True) }}"/></a></li>
+                    <li><a href="#tab3" data-toggle="tab"><img class="avatar-small" src="{{ current_user.avatar_url}}"/></a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab1">
@@ -49,21 +49,21 @@
                             {% else %}
                             <li>
                             {% endif %}
-                            <a href="{{ href }}"><i class="icon-"></i> <span>{{caption}}</span><i class="flag"></i></a>
+                            <a href="{{ href }}"><i class="glyphicon-"></i> <span>{{caption}}</span><i class="flag"></i></a>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
                     <div class="tab-pane" id="tab2">
-                        {% for n in req.card.notifications[:max(5,req.n_notify)] %}
+                        {% for n in notifications[:n_notify] %}
                         {{ utils.card_notify(n) }}
                         {% endfor %}
                     </div>
                     <div class="tab-pane" id="tab3">
                         <ul class="unstyled sidebar-nav">
-                            <li><a href="/mine"><i class="icon-user"></i> {{ req.user.name }}</a></li>
-                            <li><a href="/make"><i class="icon-edit"></i> 修改资料</a></li>
-                            <li><a href="{{ req.logout_url }}"><i class="icon-signout"></i> 登出</a>
+                            <li><a href="/mine"><i class="glyphicon glyphicon-user"></i> {{ current_user.name }}</a></li>
+                            <li><a href="/make"><i class="glyphicon glyphicon-edit"></i> 修改资料</a></li>
+                            <li><a href="{{ logout_url }}"><i class="fa fa-sign-out"></i> 登出</a>
                         </ul>
                     </div>
                 </div>

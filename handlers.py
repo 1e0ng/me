@@ -106,6 +106,8 @@ class BaseHandler(RequestHandler):
             #('/magic', '星座',   'magic', ''),
 
         ] if self.has_permission(i[0])]
+        kwargs.setdefault('n_notify', 0)
+        kwargs.setdefault('notifications', [])
 
         return super(BaseHandler, self).render(template, **kwargs)
 
