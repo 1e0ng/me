@@ -102,7 +102,7 @@ class BaseHandler(RequestHandler):
             ('/cards', 'cards', 'All Cards'),
             ('/timeline', 'timeline',   'Timeline'),
         ] if self.has_permission(i[0])]
-        user = self.current_user
+        user = self.db.user.find_one({'email': self.m})
         user['profile'] = self.db.profile.find_one({'user_id': user['_id']}) or {}
 
         kwargs['user'] = user
@@ -185,7 +185,7 @@ class UserHandler(BaseHandler):
         self.write(self.dumps(dict(ok=1)))
 
     def save(self, uid):
-        mail = self.get_argument('mail')
+        email = self.get_argument('mail')
         name = self.get_argument('name')
         pwd = self.get_argument('pwd', '')
         role = self.get_argument('role')
@@ -201,7 +201,7 @@ class UserHandler(BaseHandler):
         insert = '_id' not in user
 
         user.update({
-            'mail': mail,
+            'email': email,
             'name': name,
             'role': int(role),
         })
@@ -225,7 +225,7 @@ class UserHandler(BaseHandler):
             self.db.user.save(user)
 
             if insert:
-                send_mail(mail,
+                send_mail(email,
                     'Your New Account At %s' % self.get_main_domain,
                     'Hi, %s!<br>' % name +
                     'a new accont has been created for you. <br>' +
