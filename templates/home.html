@@ -3,13 +3,13 @@
 <div class="container">
     <div class="row-fluid">
         <div class="span8">
-            {% if card.profile.astro < 1 or card.profile.marriage < 1 %}
+            {% if user.profile.astro < 1 or user.profile.marriage < 1 %}
             <div class="alert alert-error">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 填写自己的
-                {% if card.profile.astro == 0 %}
+                {% if user.profile.astro == 0 %}
                 星座
-                {% elif card.profile.marriage == 0 %}
+                {% elif user.profile.marriage == 0 %}
                 感情状况
                 {% endif %}
                 才能看到别人的哟。

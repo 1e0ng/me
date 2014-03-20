@@ -99,18 +99,16 @@ class BaseHandler(RequestHandler):
             ('/events', 'events',   'Events'),
             ('/groups', 'groups',   'Groups'),
             ('/mycard',     'mycard', 'My Card'),
-            #('/cardcase', '卡片夹',   'briefcase', ''),
-            #('/dig', '花名榜',   'trophy', ''),
             ('/cards', 'cards', 'All Cards'),
             ('/timeline', 'timeline',   'Timeline'),
-            #('/magic', '星座',   'magic', ''),
-
         ] if self.has_permission(i[0])]
-        kwargs.setdefault('n_notify', 0)
-        kwargs.setdefault('notifications', [])
+        user = self.current_user
+        user['profile'] = self.db.profile.find_one({'user_id': user['_id']}) or {}
+
+        kwargs['user'] = user
+        kwargs['notifications'] = list(self.db.notification.find({'user_id': user['_id'], 'new': True}, order=[('_id', -1)])) if user else []
 
         return super(BaseHandler, self).render(template, **kwargs)
-
 
     @property
     def db(self):

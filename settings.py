@@ -11,7 +11,7 @@ def define_app_options():
 
     define('mongodb_host', default="127.0.0.1")
     define('mongodb_port', default=27017)
-    define('mongodb_name', default="shire")
+    define('mongodb_name', default="me")
 
     define('port', default=8004)
 
@@ -21,7 +21,6 @@ def define_app_options():
     define('smtp_host', 'smtp.xx.com')
     define('smtp_username', 'user@domain')
     define('smtp_password', 'idontknow')
-
 
     try:
         import local_settings
