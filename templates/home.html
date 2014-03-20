@@ -1,6 +1,59 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="well">
-{{word}}
-</div>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span8">
+            {% if card.profile.astro < 1 or card.profile.marriage < 1 %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                填写自己的
+                {% if card.profile.astro == 0 %}
+                星座
+                {% elif card.profile.marriage == 0 %}
+                感情状况
+                {% endif %}
+                才能看到别人的哟。
+                <a href="/make">现在就去填</a>
+            </div>
+            {% endif %}
+            <section class="latest-photo-blog">
+                <h3>最新图片</h3>
+                <div class="blog-thumbs clearfix">
+                    {% for b in new_photos[:18] %}
+                    {% if isinstance(b, Blog) %}
+                    {{blog_utils.photo_blog_thumb(b)}}
+                    {% elif isinstance(b, Card) %}
+                    {{card_ui.card_thumb(b)}}
+                    {% else %}
+                    {{event_utils.photo_thumb(b)}}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+            <hr class="hidden-phone">
+            <section class="badge-list hidden-phone">
+                <div class="badge-list">
+                    <a class="me-badage-link me-badage-link-large card-tooltip" data-toggle="tooltip" title="徽章"><i class="icon-trophy me-badage"></i></a>
+                    {% for b in all_badages %}
+                    <a class="me-badage-link me-badage-link-large card-tooltip" data-toggle="tooltip"
+                        href="/badage/{{ b.name }}" title="{{ b.name }}({{ b.intro }})"><i class="{{ b.icon }} me-badage"></i></a>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+        <div class="span4">
+            <section class="latest-update hidden-phone">
+                <h3>最新广播<sub><a href="/update">（全部）</a></h3>
+                    <div class="media-sidebar">
+                        {% for b in blogs[:20] %}
+                        {{ blog_utils.blog_ui(b) }}
+                        {% endfor %}
+                    </div>
+                    <a href="/update" class="btn btn-link btn-block">更多广播…</a>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

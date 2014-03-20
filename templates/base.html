@@ -31,13 +31,11 @@
             <div class="tabbable"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab1" data-toggle="tab"><i class="glyphicon glyphicon-home"></i></a></li>
-                    <li><a href="#tab2" data-toggle="tab" onclick="return read_notify('')">
-                        {% if n_notify > 0 %}
-                        <span id="notify-num" class="important">{{n_notify}}</span>
-                        {% else %}
-                        <span id="notify-num">0</span>
-                        {% endif %}
-                    </a></li>
+                    <li>
+                    <a href="#tab2" data-toggle="tab" onclick="return read_notify('')">
+                        <span id="notify-num" {% if n_notify %}class="important"{% endif %}>{{n_notify}}</span>
+                    </a>
+                    </li>
                     <li><a href="#tab3" data-toggle="tab"><img class="avatar-small" src="{{ current_user.avatar_url}}"/></a></li>
                 </ul>
                 <div class="tab-content">
@@ -71,7 +69,10 @@
         </div>
     </div>
     {% endif %}
-
+    <div class="main-content">
+        {% block body %}
+        {% endblock %}
+    </div>
         <script src="{{static_url('js/jquery-1.10.2.min.js')}}"></script>
         <script src="{{static_url('js/jquery.cookie.js')}}"></script>
         <script src="{{static_url('js/bootstrap.min.js')}}"></script>
