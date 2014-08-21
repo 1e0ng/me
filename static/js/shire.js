@@ -8,7 +8,7 @@ function getCookie(name) {
 shire.ajax = function(url, type, args, callback){
     return $.ajax({
         'type': type,
-        'timeout': 60000,
+        'timeout': 10000,
         'url': url,
         'data': args,
         'dataType': 'json'
@@ -96,4 +96,39 @@ shire.unescape_html = (function(){
           return entityMap[s];
         });
     };
+})();
+
+$(function() {
+    if($('.me-comm')){
+        var meCommForm = $('.me-comm');
+        var highlighter = meCommForm.find('p.mention-highlighter');
+        var meCommTextarea = $('.me-comm-textarea');
+        //console.log(meCommTextarea);
+        meCommTextarea.tagsug({
+            url: 'https://api.douban.com/shuo/in/complete?alt=xd&count={max}&callback=?&word=',
+            highlight: true,
+            highlighter: highlighter
+        });
+    }
+	var $container = $('.columns');
+	
+	$container.imagesLoaded( function(){
+	  $container.masonry({
+	    itemSelector : '.columns-item'
+	  });
+	});
+
+    $("body").delegate(".blog-comment-input", "focus", function() {
+        /*to make this flexible, I'm storing the current width in an attribute*/
+        $(this).parent().addClass("blog-comment-action-expand");
+    });
+    $("body").delegate(".blog-comment-cancel", "click", function() {
+        /*to make this flexible, I'm storing the current width in an attribute*/
+        $(this).parent().removeClass("blog-comment-action-expand");
+        $(this).prevAll(".hide").hide();
+        $(this).prevAll(".blog-comment-input").val("");
+    });
+
+	$('.fbtimeline').masonry({itemSelector : '.item',});
+    $(".card-tooltip").tooltip();
 })();

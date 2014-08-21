@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Me</title>
+        <title>{{site}}</title>
         <link href="{{static_url('css/bootstrap.min.css')}}" rel="stylesheet" media="screen">
         <link href="{{static_url('css/shire.css')}}" rel="stylesheet" media="screen">
 
@@ -73,53 +73,16 @@
         {% block body %}
         {% endblock %}
     </div>
-        <script src="{{static_url('js/jquery-1.10.2.min.js')}}"></script>
+        <script src="{{static_url('js/jquery-1.11.1.min.js')}}"></script>
         <script src="{{static_url('js/jquery.cookie.js')}}"></script>
         <script src="{{static_url('js/bootstrap.min.js')}}"></script>
-        <script src="{{static_url('js/shire.js')}}"></script>
 
         <script src="{{static_url('js/jquery.masonry.min.js')}}"></script>
         <script src="{{static_url('js/mustache.js')}}"></script>
         <script src="{{static_url('js/tagsug.js')}}"></script>
         <script src="{{static_url('js/webapp.js')}}"></script>
 
-    <script>
-    if($('.me-comm')){
-        var meCommForm = $('.me-comm');
-        var highlighter = meCommForm.find('p.mention-highlighter');
-        var meCommTextarea = $('.me-comm-textarea');
-        //console.log(meCommTextarea);
-        meCommTextarea.tagsug({
-            url: 'https://api.douban.com/shuo/in/complete?alt=xd&count={max}&callback=?&word=',
-            highlight: true,
-            highlighter: highlighter
-        });
-    }
-	var $container = $('.columns');
-	
-	$container.imagesLoaded( function(){
-	  $container.masonry({
-	    itemSelector : '.columns-item'
-	  });
-	});
-
-$("body").delegate(".blog-comment-input", "focus", function()
-{
-    /*to make this flexible, I'm storing the current width in an attribute*/
-    $(this).parent().addClass("blog-comment-action-expand");
-});
-$("body").delegate(".blog-comment-cancel", "click", function()
-{
-    /*to make this flexible, I'm storing the current width in an attribute*/
-    $(this).parent().removeClass("blog-comment-action-expand");
-    $(this).prevAll(".hide").hide();
-    $(this).prevAll(".blog-comment-input").val("");
-});
-
-	$('.fbtimeline').masonry({itemSelector : '.item',});
-    $(".card-tooltip").tooltip();
-	</script>
-
+        <script src="{{static_url('js/shire.js')}}"></script>
         {% block js %}
         {% endblock %}
     </body>

@@ -1,4 +1,4 @@
-{% extends "b.html" %}
+{% extends "base.html" %}
 {% set active_page = 'home' -%}
 
 
@@ -24,16 +24,12 @@
             </div>
         </div>
     </div>
-</div>
+</form>
 {% endblock %}
 {% block js %}
 <script src="/static/js/sha1.js"></script>
 
 <script>
-function hash(str, passphrase){
-    return CryptoJS.AES(str, passphrase).toString(CryptoJS.enc.Hex);
-}
-
 $(function() {
     var url = window.location.pathname;
     $('form.list-box').submit(function(e){
@@ -41,13 +37,10 @@ $(function() {
 
         var mail = $('#mail').val();
         var pwd = $('#pwd').val();
-        var passphrase = '{{passphrase}}';
 
         if (pwd) {
-            //pwd = hash(pwd, passphrase);
+            pwd = hash(pwd, mail);
         }
-        //alert(pwd);
-        //return;
 
         shire.gui_post(url, {'mail': mail, 'pwd': pwd}, function(data) {
             window.location = data['url'];
