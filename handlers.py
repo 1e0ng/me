@@ -101,12 +101,15 @@ class BaseHandler(RequestHandler):
             ('/cards', 'cards', 'All Cards'),
             ('/timeline', 'timeline',   'Timeline'),
         ] if self.has_permission(i[0])]
-        user = self.db.user.find_one({'mail': self.m})
+        user = self.db.user.find_one({'mail': self.m}) or {'_id': None}
         user['profile'] = self.db.profile.find_one({'user_id': user['_id']}) or {}
+
 
         kwargs['user'] = user
         kwargs['notifications'] = list(self.db.notification.find({'user_id': user['_id'], 'new': True}, order=[('_id', -1)])) if user else []
         kwargs['site'] = 'Me'
+        kwargs['new_photos'] = []
+        kwargs['blogs'] = []
 
         return super(BaseHandler, self).render(template, **kwargs)
 
