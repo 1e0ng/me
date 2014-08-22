@@ -742,9 +742,6 @@ class Card(object):
         rs = store.execute("select rtime from me_photo_tag where user_id=%s", id)
         for r in rs:
             c = c + get_value_by_time(2, 2, r[0])
-        #= =
-        if d.uid == 'bear':
-            c = c - 100
         return c
 
     @classmethod
