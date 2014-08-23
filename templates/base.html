@@ -42,7 +42,7 @@
                     <div class="tab-pane active" id="tab1">
                         <ul class="unstyled sidebar-nav">
                             {% for href, id, caption in navigation_bar %}
-                            {% if active_page == id %}
+                            {% if active_page and active_page == id or request.path == href%}
                             <li class="active">
                             {% else %}
                             <li>
