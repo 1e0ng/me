@@ -131,4 +131,4 @@ $(function() {
 
 	$('.fbtimeline').masonry({itemSelector : '.item',});
     $(".card-tooltip").tooltip();
-})();
+});
